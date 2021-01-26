@@ -1,0 +1,26 @@
+import  os
+import requests
+
+ApiKey=os.environ.get('Indian_Rail_Api_Key')
+
+class IRCTC:
+    def __init__(self):
+        print("Indian Railway Train Schedule:-")
+        train_no=input("Please Enter the train number:")
+        self.fetch_data(train_no)
+    def fetch_data(self,train_no):
+        data = requests.get(
+            "https://indianrailapi.com/api/v2/TrainSchedule/apikey/"+ApiKey+"/TrainNumber/{}".format(train_no))
+
+        data = data.json()
+        self.display_results(data)
+
+    def display_results(self,data):
+        print("""SerialNo\tStationCode\t StationName\t\t ArrivalTime\t\tDepartureTime\tDistance\tDay""")
+        for i in data['Route']:
+            print(i['SerialNo'],"\t\t\t",i['StationCode'],"\t\t",i['StationName'],"\t\t",i['ArrivalTime'],"\t\t",i['DepartureTime'],"\t\t",i['Distance'],"\t\t",i['Day'])
+
+obj=IRCTC()
+
+
+
